@@ -11,7 +11,7 @@ use DBI;
 print "Content-type: text/html\n\n";
 
 #definition of variables needed
-my($isbn,$title,$author);
+my($isbn,$title,$author,$isbnSearch,$titleSearch,$authorSearch);
 my $dbh;
 my $db="sulliv49";
 my $user="sulliv49";
@@ -24,6 +24,33 @@ $isbn= $obj->param("ISBN");
 $title= $obj->param("Title");
 $author= $obj->param("Author");
 
+if($author eq '')
+{	
+	$authorSearch = "REGEXP '^.*'";
+        #print $authorSearch;
+}
+else
+{
+	$authorSearch= "= '$author'";
+	#print $authorSearch;
+}
+if($title eq '')
+{
+	$titleSearch= "REGEXP '^.*'";
+}
+else
+{
+	$titleSearch= "= '$title'";
+}
+if($isbn eq '')
+{
+	$isbnSearch= "REGEXP '^.*';";
+}
+else
+{
+	$isbnSearch= "= '$isbn';";
+}
+
 #connect to the MySQL database
         $dbh = DBI->connect
         ("DBI:mysql:database=$db:host=$host:mysql_socket=$socket",
@@ -32,29 +59,38 @@ $author= $obj->param("Author");
                                 or die "Can't connect to 
 database:$DBI::errstr\n";
  
-my $sql = "SELECT title from book WHERE author = '$author'";
-my $tagID = $dbh->prepare($sql);
-$tagID->execute();
+my $sql = "SELECT ISBN,title,subject,author,price,publisher_name"
+	 . " from book WHERE author ".  $authorSearch
+         . " AND title " . $titleSearch
+         . " and ISBN " . $isbnSearch;
+my $sth = $dbh->prepare($sql);
+$sth->execute();
+
 my @rows;
-while(@rows = $tagID->fetchrow_array()) {
+my @fields;
+
+while(@rows = $sth->fetchrow()) {
 	#my @result = @rows;
-	print @rows; 
+	#push(@fields,@result);
+	#print @rows; 
+	#print "<br>";
+	print $rows[0];
 	print "<br>";
-
+	print $rows[1];
+        print "<br>";
+	print $rows[2];
+        print "<br>";
+	print $rows[3];
+        print "<br>";
+	print $rows[4];
+        print "<br>";
+	print $rows[5];
+        print "<br>";
+	print "<br>";
+	
 }
-$tagID->finish();
 
+$sth->finish();
 
-
-#my $tagID = $dbh->prepare($sql);
-#$tagID->execute();
-
-#my @test;
-#$tagID->bind_columns(\@test);
-#$tagID->fetch();
-#$tagID->finish();
-
-#print "Test 1= @test[1]";
-#print "test search";
 
 
