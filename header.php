@@ -14,7 +14,7 @@
   <td align="center" style="background:grey">
   <ul id="list-nav">
   <li><a href="home.php">Home</a></li>
-  <li><a href="test.php">Order</a></li>
+  <li><a href="order.php">Order</a></li>
   <li><a href="test.php">Advanced Search</a></li>
   <li><a href="Browse.php">Browse</a></li>
   </ul>
