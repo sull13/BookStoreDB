@@ -24,6 +24,7 @@ $paytype= $obj->param("payType");
 $cardnum= $obj->param("cardNum");
 $isbn= $obj->param("ISBN");
 $custid= $obj->param("custID");
+$quan= $obj->param("quan");
 
 #connect to the MySQL database
         $dbh = DBI->connect
@@ -33,13 +34,53 @@ $custid= $obj->param("custID");
                                 or die "Can't connect to
 database:$DBI::errstr\n";
 
+#check that the isbn is valid
+my $sql = "SELECT isbn from book where isbn = '$isbn'";
+my $sth= $dbh->prepare($sql);
+my $rows= $sth->execute();
 
-my $sql = "INSERT INTO orders VALUES(default,'$paytype','$cardnum', 
-'2012-04-16','Placed','$custid')";
+if($rows < 1)
+{
+	print "ISBN not found.\n"
+}
 
-my $sth = $dbh->prepare($sql);
-$sth->execute();
+else
+{
+	#get today's date
+	#get the localtime for the date
+        my($sec,$min,$hour,$mday,$mon,$year,$wday,$wday,$yday,$isdst) = localtime;
+        my $curYear= $year + 1900;
+        my $yearString= "";
+        $yearString .= $curYear .= "-";
+        $mon = $mon + 1;
+        if($mon < 9)
+        {
+       		$yearString .= "0";
+        }
+       	$yearString .= $mon .= "-";
+        if($mday < 10)
+        {
+         	$yearString .= "0";
+        }
+       	$yearString .= $mday;
+
+	$sql = "INSERT INTO orders VALUES(default,'$paytype','$cardnum', 
+	'$yearString','Placed','$custid')";
+
+	my $sth = $dbh->prepare($sql);
+	$sth->execute();
+
+	$sql = "SELECT MAX(OID) from orders";
+	$sth = $dbh->prepare($sql);
+	$sth->execute();
+	my @result = $sth->fetchrow_array();
+
+	$sql = "INSERT INTO contain VALUES($result[0],'$isbn','$quan')";
+	$sth = $dbh->prepare($sql);
+	$sth->execute();
+
+	print "Your order has been successfully placed.\n";
+}
 
 $sth->finish();
 
-print $custid;
