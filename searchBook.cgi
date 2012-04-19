@@ -11,7 +11,8 @@ use DBI;
 print "Content-type: text/html\n\n";
 
 #definition of variables needed
-my($isbn,$title,$author,$isbnSearch,$titleSearch,$authorSearch);
+my($isbn,$title,$author,$sub,$pub,
+   $isbnSearch,$titleSearch,$authorSearch,$subSearch,$pubSearch);
 my $dbh;
 my $db="sulliv49";
 my $user="sulliv49";
@@ -23,6 +24,9 @@ my $obj = new CGI;
 $isbn= $obj->param("ISBN");
 $title= $obj->param("Title");
 $author= $obj->param("Author");
+$sub = $obj->param("sub");
+$pub= $obj->param("pub");
+
 
 if($author eq '')
 {	
@@ -44,11 +48,27 @@ else
 }
 if($isbn eq '')
 {
-	$isbnSearch= "REGEXP '^.*';";
+	$isbnSearch= "REGEXP '^.*'";
 }
 else
 {
-	$isbnSearch= "= '$isbn';";
+	$isbnSearch= "= '$isbn'";
+}
+if($sub eq '')
+{
+	$subSearch= "REGEXP '^.*'";
+}
+else
+{
+	$subSearch= "= '$sub'";
+}
+if($pub eq '')
+{
+	$pubSearch= "REGEXP '^.*';";
+}
+else
+{
+	$pubSearch= "= '$pub';";
 }
 
 #connect to the MySQL database
@@ -62,7 +82,9 @@ database:$DBI::errstr\n";
 my $sql = "SELECT ISBN,title,subject,author,price,publisher_name"
 	 . " from book WHERE author ".  $authorSearch
          . " AND title " . $titleSearch
-         . " and ISBN " . $isbnSearch;
+         . " and ISBN " . $isbnSearch
+	 . " and subject " . $subSearch
+	 . " and publisher_name " . $pubSearch;
 my $sth = $dbh->prepare($sql);
 $sth->execute();
 
