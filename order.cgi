@@ -46,41 +46,64 @@ if($rows < 1)
 
 else
 {
-	#get today's date
-	#get the localtime for the date
-        my($sec,$min,$hour,$mday,$mon,$year,$wday,$wday,$yday,$isdst) = localtime;
-        my $curYear= $year + 1900;
-        my $yearString= "";
-        $yearString .= $curYear .= "-";
-        $mon = $mon + 1;
-        if($mon < 9)
-        {
-       		$yearString .= "0";
-        }
-       	$yearString .= $mon .= "-";
-        if($mday < 10)
-        {
-         	$yearString .= "0";
-        }
-       	$yearString .= $mday;
+	#check to make sure there is enough of a given book left in the 
+	#database
 
-	$sql = "INSERT INTO orders VALUES(default,'$paytype','$cardnum', 
-	'$yearString','Placed','$custid')";
+	my $sql = "SELECT stock from book where ISBN = '$isbn'";
+	my $sth= $dbh->prepare($sql);
+	my $rows= $sth->execute();
+	my @stock = $sth->fetchrow();
+	if($stock[0] >= $quan)
+	{
+	
+		#get today's date
+		#get the localtime for the date
+        	my($sec,$min,$hour,$mday,$mon,$year,$wday,$wday,$yday,$isdst) = localtime;
+        	my $curYear= $year + 1900;
+        	my $yearString= "";
+        	$yearString .= $curYear .= "-";
+        	$mon = $mon + 1;
+        	if($mon < 9)
+        	{
+       			$yearString .= "0";
+        	}
+       		$yearString .= $mon .= "-";
+        	if($mday < 10)
+        	{
+         		$yearString .= "0";
+        	}
+       		$yearString .= $mday;
 
-	my $sth = $dbh->prepare($sql);
-	$sth->execute();
+		$sql = "INSERT INTO orders VALUES(default,'$paytype','$cardnum', '$yearString','Placed','$custid')";
 
-	$sql = "SELECT MAX(OID) from orders";
-	$sth = $dbh->prepare($sql);
-	$sth->execute();
-	my @result = $sth->fetchrow_array();
+		my $sth = $dbh->prepare($sql);
+		$sth->execute();
 
-	$sql = "INSERT INTO contain VALUES($result[0],'$isbn','$quan')";
-	$sth = $dbh->prepare($sql);
-	$sth->execute();
+		$sql = "SELECT MAX(OID) from orders";
+		$sth = $dbh->prepare($sql);
+		$sth->execute();
+		my @result = $sth->fetchrow_array();
 
-	print "Your order has been successfully placed.\n";
+		$sql = "INSERT INTO contain VALUES($result[0],'$isbn','$quan')";
+		$sth = $dbh->prepare($sql);
+		$sth->execute();
+
+		#update the amount of stock left in the book
+		my $newStock = $stock[0] - $quan;
+		$sql = "Update book SET stock = '$newStock' where ISBN = '$isbn';";
+		$sth = $dbh->prepare($sql);
+		$sth->execute();
+
+		print "Your order has been successfully placed.\n";
+	}
+	else
+	{
+		print "Sorry, we don't have enough books left in stock\n";
+
+	}
+
 }
+
 
 $sth->finish();
 

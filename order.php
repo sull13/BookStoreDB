@@ -14,8 +14,20 @@ Style"/>
 <?php
   include('header.php');
 ?>
+
+<?php
+	//get the infomation passed in from searchBook.cgi
+	//if we came from there
+	$isbn= "";
+	$isbn= $_GET["isbn"];
+	$title= "";
+	$title= $_GET["title"];
+?>
+
+
+
   <!-- page content -->
-  <p>Customer Order</p>
+  <p>Customer Order: <br> <?php printf("Title: $title"); ?> </p>
 
 <form VALUE ="Order" action="order.cgi" method="post">
 Payment Type <select name= "payType">
@@ -25,7 +37,8 @@ Payment Type <select name= "payType">
              <option> DISCOVER </option> </select> <br>
 Card Number:&nbsp<input type="text" name="cardNum" /> 
 <br>
-ISBN&nbsp&nbsp&nbsp<input type="text" name= "ISBN" /> <br>
+ISBN&nbsp&nbsp&nbsp<input type="text" name= "ISBN" value="<?php 
+printf($isbn); ?>"  /> <br>
 Quantity: <input type="text" name= "quan" /> <br>
 <input type= "hidden" name= custID value= '0001' />
 Order Book<input type="submit" /> <br>

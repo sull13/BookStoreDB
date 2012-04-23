@@ -79,12 +79,18 @@ else
                                 or die "Can't connect to 
 database:$DBI::errstr\n";
  
+#safely add the quotes to title
+#print $title;
+#$title = $dbh->quote($title);
+#print "<br>";
+#print $title;
+
 my $sql = "SELECT ISBN,title,subject,author,price,publisher_name"
-	 . " from book WHERE author ".  $authorSearch
-         . " AND title " . $titleSearch
-         . " and ISBN " . $isbnSearch
-	 . " and subject " . $subSearch
-	 . " and publisher_name " . $pubSearch;
+	  . " from book WHERE author ".  $authorSearch
+	  . " AND title " . $titleSearch
+	  . " and ISBN " . $isbnSearch
+	  . " and subject " . $subSearch
+	  . " and publisher_name " . $pubSearch;
 my $sth = $dbh->prepare($sql);
 $sth->execute();
 
@@ -92,22 +98,20 @@ my @rows;
 my @fields;
 
 while(@rows = $sth->fetchrow()) {
-	#my @result = @rows;
-	#push(@fields,@result);
-	#print @rows; 
-	#print "<br>";
-	print $rows[0];
+	print "ISBN: $rows[0]";
 	print "<br>";
-	print $rows[1];
+	print "Title: $rows[1]";
         print "<br>";
-	print $rows[2];
+	print "Subject: $rows[2]";
         print "<br>";
-	print $rows[3];
+	print "Author(s): $rows[3]";
         print "<br>";
-	print $rows[4];
+	print "Price: $rows[4]";
         print "<br>";
-	print $rows[5];
+	print "Publisher: $rows[5]";
         print "<br>";
+	print "<a href='order.php?isbn=$rows[0]&title=$rows[1]'>Order</a>";
+	print "<br>";
 	print "<br>";
 	
 }
