@@ -5,7 +5,7 @@
   <!-- page header -->
   <table width="1000px" cellpadding="0" cellspacing="0" border="0">
   <tr>
-    <td align="left" style="background:white"><img src= "bookstore_banner.jpg"  alt="organization banner"></td>
+    <td align="left" style="background:white"><img src= "bookstore_banner.jpg" alt="organization banner"></td>
   </tr>
   <tr>
   </tr>
@@ -14,7 +14,7 @@
   <td align="center" style="background:grey">
   <ul id="list-nav">
   <li><a href="home.php">Home</a></li>
-  <li><a href="order.php">Order</a></li>
+  <li><a href="customer.php">Customer</a></li>
   <li><a href="advancedSearch.php">Advanced Search</a></li>
   <li><a href="Browse.php">Browse</a></li>
   </ul>
