@@ -19,6 +19,8 @@ Style"/>
 
   <a href="order.php">Order</a> <br>
   <a href="displayOrders.php">View Previous Orders</a> <br>
+  <a href="suggestedBooks.php">Suggested Books</a> <br>
+  <a href="bestSellers.php">Best Sellers</a> <br>	
 
 <?php
   include('footer.php');
