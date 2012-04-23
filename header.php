@@ -16,7 +16,7 @@
   <li><a href="home.php">Home</a></li>
   <li><a href="order.php">Order</a></li>
   <li><a href="advancedSearch.php">Advanced Search</a></li>
-  <li><a href="Browse.php">Browse</a></li>
+  <li><a href="searchBook.cgi">Browse</a></li>
   </ul>
   </td>
   </tr>
