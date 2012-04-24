@@ -74,7 +74,6 @@ else
 
 }
 
-print $sql;
 if($type eq "add" || $type eq "update")
 {
 	$sth= $dbh->prepare($sql);

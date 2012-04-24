@@ -12,7 +12,7 @@ print "Content-type: text/html\n\n";
 
 #definition of variables needed
 my($isbn,$title,$author,$sub,$pub,
-   $isbnSearch,$titleSearch,$authorSearch,$subSearch,$pubSearch);
+   $isbnSearch,$titleSearch,$authorSearch,$subSearch,$pubSearch,$type);
 my $dbh;
 my $db="sulliv49";
 my $user="sulliv49";
@@ -26,7 +26,7 @@ $title= $obj->param("Title");
 $author= $obj->param("Author");
 $sub = $obj->param("sub");
 $pub= $obj->param("pub");
-
+$type= $obj->param("type");
 
 if($author eq '')
 {	
@@ -110,10 +110,16 @@ while(@rows = $sth->fetchrow()) {
         print "<br>";
 	print "Publisher: $rows[5]";
         print "<br>";
-	print "<a href='order.php?isbn=$rows[0]&title=$rows[1]'>Order</a>";
+	if($type eq "update")
+	{
+		print "<a href='AddUpdateBook.php?type=$type&ISBN=$rows[0]'>Modify</a>";
+	}
+	else
+	{
+		 print "<a href='order.php?isbn=$rows[0]&title=$rows[1]'>Order</a>";
+	}
 	print "<br>";
 	print "<br>";
-	
 }
 
 $sth->finish();

@@ -37,7 +37,7 @@ Style"/>
 
                 echo "ISBN: $isbn <br> Title: $title <br>"; 
  		echo "Author: $author <br> Price: $price";
-                echo "Publisher: $publisher <br>";
+                echo "<br> Publisher: $publisher <br>";
 		echo "<a href='order.php?isbn=$isbn&title=$title'>Order</a> <br> <br>";
 	}
 

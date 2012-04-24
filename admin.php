@@ -18,7 +18,11 @@ Style"/>
   <p>Admin Page</p>
   <a href= "displayCustomer.cgi"> Display Customers</a> <br>
   <a href= "AddUpdateCustomer.php?type=add"> Add Customer</a> <br>
-  <a href= "AddUpdateCustomer.php?type=update"> Modify Customer</a> <br>
+  <a href= "displayPublisher.cgi"> Display Publishers</a> <br>
+  <a href= "AddUpdatePublisher.php?type=add">Add Publisher</a> <br>
+  <a href= "searchBook.cgi?type=update">Display Books</a> <br>
+  <a href= "AddUpdateBook.php?type=add">Add Book</a> <br>
+  <a href= "reorderBooks.php">Reorder Books</a> <br>
 <?php
   include('footer.php');
 ?>
