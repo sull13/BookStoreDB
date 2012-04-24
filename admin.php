@@ -22,6 +22,7 @@ Style"/>
   <a href= "AddUpdatePublisher.php?type=add">Add Publisher</a> <br>
   <a href= "searchBook.cgi?type=update">Display Books</a> <br>
   <a href= "AddUpdateBook.php?type=add">Add Book</a> <br>
+  <a href= "stock.php">View Inventory</a> <br>
   <a href= "reorderBooks.php">Reorder Books</a> <br>
 <?php
   include('footer.php');

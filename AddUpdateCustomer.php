@@ -64,7 +64,9 @@ else
 
 
   <form action="AddUpdateCustomer.cgi" method="post">
-Customer ID:<input type="text" name="cid" value="<?php printf($CID); ?>" /> <br>
+<?php if($type === 'add'){printf("Customer ID:");} ?> 
+<input type="<?php if($type === 'update'){printf("hidden");}else{printf("text");} ?>
+" name="cid" value="<?php printf($CID); ?>" /> <br>
 First Name:&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" name="fname" value="<?php printf($fname); ?>" /> <br>
 Last Name:&nbsp&nbsp&nbsp<input type="text" name= "lname" value="<?php printf($lname); ?>" /> <br>
 Street: <input type="text" name= "street" value="<?php printf($street); ?>" /> <br>
