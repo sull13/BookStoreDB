@@ -21,29 +21,24 @@ Style"/>
 	//an already existing customer
 	$type = "";
 	$type = $_GET["type"];
-	$CID = "";
-	$CID = $_GET["CID"];
+	$PUB = "";
+	$PUB = $_GET["PUB"];
 
-	//check if we are updating the database and the customer id
-	//was given through the link, meaning modify in the customer
+	//check if we are updating the database and the publisher
+	//was given through the link, meaning modify in the publisher
 	//list was clicked on
-	if( ($type === "update") && (!($CID === "")) && (!(is_null($CID) )) ) 
+	if( ($type === "update") && (!($PUB === "")) && (!(is_null($PUB) )) ) 
 	{
 		mysql_connect("localhost:/tmp/mysql-51.sock", "sulliv49", "redcreed2") or
                         die("Could not connect: " . mysql_error());
                 mysql_select_db("sulliv49");
 	
-                $result = mysql_query("SELECT * FROM customer WHERE customerID='$CID'");
+                $result = mysql_query("SELECT * FROM publisher WHERE publisher_name='$PUB'");
 
                 $row = mysql_fetch_array($result, MYSQL_ASSOC);
                 $name = $row["publisher_name"];
-                
-                
                 $city = $row["city"];
-              
-              
                 mysql_free_result($result);
-
 	} 
 ?>
 
@@ -63,11 +58,12 @@ else
 
 
   <form action="AddUpdatePublisher.cgi" method="post">
-Publisher Name:&nbsp&nbsp&nbsp&nbsp&nbsp<input type="text" name="Name" 
-value="<?php printf($name); ?>" /> <br>
+<?php if($type === 'add'){printf("Publisher Name:");}else{printf($PUB);} ?>
+<input type="<?php if($type === 'update') { 
+printf("hidden");}else{printf("text");} ?>
+" name="Name" value="<?php printf($name); ?>" /> <br>
 City: <input type="text" name= "city" value="<?php printf($city); ?>"  /> <br>
-       <input type="hidden" name= type value="<?php printf($type); ?>" /> 
-
+<input type="hidden" name= type value="<?php printf($type); ?>" /> 
 Update/Add Publisher<input type="submit" /> <br>
 </form>
 

@@ -25,6 +25,15 @@ Style"/>
 	$result = mysql_query($query);
 	
 	echo "<p>";
+
+
+	echo "<table border='1'>
+	      <tr>
+	      <th>ISBN</th>
+	      <th>Title</th>
+	      <th>Stock</th>
+	      <th></th>
+	      </tr>";
 	
 	while($row = mysql_fetch_array($result))
 	{
@@ -32,12 +41,16 @@ Style"/>
                 $title= $row["title"];
 		$stock= $row["stock"];
 	
-                echo "ISBN: $isbn <br> Title: $title <br>"; 
+                /*echo "ISBN: $isbn <br> Title: $title <br>"; 
 		echo "Stock: $stock <br>";
 		echo "<a href='reorder.php?isbn=$isbn&title=$title'>Reorder Book</a> <br> <br>";	
+		*/
+		
+		  echo "<tr><td>$isbn</td><td>$title</td><td>$stock</td><td><a href='reorder.php?isbn=$isbn&title=$title'>Reorder</a></td></tr>";
+
 	}
 	
-	echo "</p>";
+	echo "</table></p>";
       	mysql_free_result($result);
 	mysql_close();
 

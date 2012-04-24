@@ -24,6 +24,9 @@ Style"/>
   <a href= "AddUpdateBook.php?type=add">Add Book</a> <br>
   <a href= "stock.php">View Inventory</a> <br>
   <a href= "reorderBooks.php">Reorder Books</a> <br>
+  <a href= "activeCustomers.php">Active Customers</a> <br>
+  <a href= "inactiveCustomers.php">Inactive Customers</a> <br>
+  <a href= "booksNotSelling.php"> Books Not Selling</a> 
 <?php
   include('footer.php');
 ?>

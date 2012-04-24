@@ -20,26 +20,20 @@ Style"/>
 	mysql_connect("localhost:/tmp/mysql-51.sock", "sulliv49", "redcreed2") 
 	or die("Could not connect: " . mysql_error());
        	mysql_select_db("sulliv49");
-	//read in all the results needed within multiple tables
-	//first use the customer id to obtain data from the orders table
-	$query="select * from book where ISBN in (select ISBN from contain where OID in (select OID from orders where (select DATEDIFF(CURDATE(), date) <  30))group by ISBN having sum(quantity) > 10);";	
+	//read in the most active customers from multiple tables
+	$query="select Fname, Lname, email from customer where customerID in (select customerID from orders where (select DATEDIFF(CURDATE(), date) < 30)group by customerID having count(*) > 1)";	
 	$result = mysql_query($query);
 	
 	echo "<p>";
-	echo "Best Selling Books <br> <br>";
-	
+	echo "Active Customers <br> <br>";
 	while($row = mysql_fetch_array($result))
 	{
-		$isbn= $row["ISBN"];
-                $title= $row["title"];
-                $subject= $row["author"];
-		$price= $row["price"];
-		$publisher= $row["publisher_name"];
+		$first= $row["Fname"];
+                $last= $row["Lname"];
+		$email= $row["email"];
 
-                echo "ISBN: $isbn <br> Title: $title <br>"; 
- 		echo "Author: $author <br> Price: $price";
-                echo "<br> Publisher: $publisher <br>";
-		echo "<a href='order.php?isbn=$isbn&title=$title'>Order</a> <br> <br>";
+                echo "$first $last <br>";
+		echo "E-mail: $email <br> <br>"; 
 	}
 
 	echo "</p>";

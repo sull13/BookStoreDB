@@ -25,7 +25,7 @@ Style"/>
 	$result = mysql_query($query);
 	
 	echo "<p>";
-	
+	echo "Books that are low in stock <br> <br>";	
 	while($row = mysql_fetch_array($result))
 	{
 		$isbn= $row["ISBN"];
