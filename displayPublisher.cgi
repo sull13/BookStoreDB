@@ -36,6 +36,7 @@ $sth->execute();
 my @rows;
 
 while(@rows = $sth->fetchrow()) {
+<<<<<<< HEAD
         
         print "Publisher: $rows[0]";
         print "<br>";
@@ -44,5 +45,15 @@ while(@rows = $sth->fetchrow()) {
 	print "<a href='AddUpdatePublisher.php?type=update&CID=$rows[0]'>Modify</a>";
 	print "<br>";
 	print "<br>";
+=======
+
+        print "Publisher: $rows[0]";
+        print "<br>";
+        print "City: $rows[1]";
+        print "<br>";
+        print "<a href='AddUpdatePublisher.php?type=update&PUB=$rows[0]'>Modify</a>";
+        print "<br>";
+        print "<br>";
+>>>>>>> b51d87674b24febcc5f109852e20f4a437e0bd5d
 }
 $sth->finish();

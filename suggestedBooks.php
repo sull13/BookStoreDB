@@ -22,11 +22,11 @@ Style"/>
        	mysql_select_db("sulliv49");
 	//read in all the results needed within multiple tables
 	//first use the customer id to obtain data from the orders table
-	$query="SELECT * from book where subject in(select subject from book where ISBN =( select ISBN from contain where OID in(select OID from orders where customerID= '0001')order by rand()limit 0,1))and ISBN not in(select ISBN from contain where OID in (select OID from orders where customerID= '0001')) limit 0,3";	
+	$query="SELECT * from book where subject in(select subject from book where ISBN =( select ISBN from contain where OID in(select OID from orders where customerID= '0001')limit 0,1))and ISBN not in(select ISBN from contain where OID in (select OID from orders where customerID= '0001')) limit 0,3";	
 	$result = mysql_query($query);
 	
 	echo "<p>";
-
+	echo "List of suggested books <br> <br>";
 	while($row = mysql_fetch_array($result))
 	{
 		$isbn= $row["ISBN"];
@@ -35,9 +35,9 @@ Style"/>
 		$price= $row["price"];
 		$publisher= $row["publisher_name"];
 
-                echo "ISBN: $isbn Title: $title <br>"; 
+                echo "ISBN: $isbn <br> Title: $title <br>"; 
  		echo "Author: $author <br> Price: $price";
-                echo "Publisher: $publisher <br>";
+                echo "<br> Publisher: $publisher <br>";
 		echo "<a href='order.php?isbn=$isbn&title=$title'>Order</a> <br> <br>";
 	}
 

@@ -22,12 +22,13 @@ Style"/>
        	mysql_select_db("sulliv49");
 	//read in all the results needed within multiple tables
 	//first use the customer id to obtain data from the orders table
-	$query="select * from book where ISBN in (select ISBN from contain where OID in (select OID from orders where (select DATEDIFF(CURDATE(), date) <  30))group by ISBN having sum(quantity) > 10);";	
+	$query="select * from book where ISBN not in (	select ISBN from contain where OID in (	select OID from orders where (select DATEDIFF(CURDATE(), date) <  30)));";	
 	$result = mysql_query($query);
 	
 	echo "<p>";
-	echo "Best Selling Books <br> <br>";
-	
+
+	echo "Books that have not sold in the last 30 days. <br> <br>";
+
 	while($row = mysql_fetch_array($result))
 	{
 		$isbn= $row["ISBN"];
@@ -39,7 +40,7 @@ Style"/>
                 echo "ISBN: $isbn <br> Title: $title <br>"; 
  		echo "Author: $author <br> Price: $price";
                 echo "<br> Publisher: $publisher <br>";
-		echo "<a href='order.php?isbn=$isbn&title=$title'>Order</a> <br> <br>";
+		echo "<br>";
 	}
 
 	echo "</p>";

@@ -16,34 +16,41 @@ Style"/>
 ?>
 
 <?php
-	//connect to the database to obtain the suggested books
+	//connect to the database to obtain the books that have to be reordered
 	mysql_connect("localhost:/tmp/mysql-51.sock", "sulliv49", "redcreed2") 
 	or die("Could not connect: " . mysql_error());
        	mysql_select_db("sulliv49");
-	//read in all the results needed within multiple tables
-	//first use the customer id to obtain data from the orders table
-	$query="select * from book where ISBN in (select ISBN from contain where OID in (select OID from orders where (select DATEDIFF(CURDATE(), date) <  30))group by ISBN having sum(quantity) > 10);";	
+	//select the books from the book table that have at least 1 book left in stock
+	$query="SELECT ISBN,title,stock from book where stock >= 1";	
 	$result = mysql_query($query);
 	
 	echo "<p>";
-	echo "Best Selling Books <br> <br>";
+
+
+	echo "<table border='1'>
+	      <tr>
+	      <th>ISBN</th>
+	      <th>Title</th>
+	      <th>Stock</th>
+	      <th></th>
+	      </tr>";
 	
 	while($row = mysql_fetch_array($result))
 	{
 		$isbn= $row["ISBN"];
                 $title= $row["title"];
-                $subject= $row["author"];
-		$price= $row["price"];
-		$publisher= $row["publisher_name"];
-
-                echo "ISBN: $isbn <br> Title: $title <br>"; 
- 		echo "Author: $author <br> Price: $price";
-                echo "<br> Publisher: $publisher <br>";
-		echo "<a href='order.php?isbn=$isbn&title=$title'>Order</a> <br> <br>";
-	}
-
-	echo "</p>";
+		$stock= $row["stock"];
 	
+                /*echo "ISBN: $isbn <br> Title: $title <br>"; 
+		echo "Stock: $stock <br>";
+		echo "<a href='reorder.php?isbn=$isbn&title=$title'>Reorder Book</a> <br> <br>";	
+		*/
+		
+		  echo "<tr><td>$isbn</td><td>$title</td><td>$stock</td><td><a href='reorder.php?isbn=$isbn&title=$title'>Reorder</a></td></tr>";
+
+	}
+	
+	echo "</table></p>";
       	mysql_free_result($result);
 	mysql_close();
 

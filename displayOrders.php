@@ -26,6 +26,7 @@ Style"/>
 	$query="SELECT OID,date,customerID FROM orders WHERE customerID='0001'";	
 	$result = mysql_query($query);
 	echo "<p>";
+	echo "List of previous orders. <br> <br>";
 	while($row = mysql_fetch_array($result))
 	{
 		$OID= $row["OID"];

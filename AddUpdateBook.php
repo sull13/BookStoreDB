@@ -22,18 +22,18 @@ Style"/>
 	$type = "";
 	$type = $_GET["type"];
 	$CID = "";
-	$CID = $_GET["CID"];
+	$ISBN = $_GET["ISBN"];
 
-	//check if we are updating the database and the customer id
-	//was given through the link, meaning modify in the customer
+	//check if we are updating the database and the isbn
+	//was given through the link, meaning modify in the book
 	//list was clicked on
-	if( ($type === "update") && (!($CID === "")) && (!(is_null($CID) )) ) 
+	if( ($type === "update") && (!($ISBN === "")) && (!(is_null($ISBN) )) ) 
 	{
 		mysql_connect("localhost:/tmp/mysql-51.sock", "sulliv49", "redcreed2") or
                         die("Could not connect: " . mysql_error());
                 mysql_select_db("sulliv49");
 	
-                $result = mysql_query("SELECT * FROM customer WHERE customerID='$CID'");
+                $result = mysql_query("SELECT * FROM book WHERE ISBN='$ISBN'");
 
                 $row = mysql_fetch_array($result, MYSQL_ASSOC);
                 $isbn = $row["ISBN"];
@@ -41,7 +41,7 @@ Style"/>
                 $subject = $row["subject"];
                 $author = $row["author"];
                 $price = $row["price"];
-                $stock = $row["stock"];
+		$stock = $row["stock"];
                 $publisher_name = $row["publisher_name"];
                 mysql_free_result($result);
 
@@ -64,8 +64,9 @@ else
 
 
   <form action="AddUpdateBook.cgi" method="post">
-ISBN: <input type="text" name = "ISBN" value="<?php printf($isbn); ?>" 
-/><br>
+<?php if($type === 'add'){printf("ISBN:");} ?> 
+<input type="<?php if($type === 'update'){printf("hidden");}else{printf("text");} ?>" name = "ISBN" value="<?php 
+printf($isbn); ?>" /><br>
 Title: <input type="text" name = "Title" value="<?php printf($title); ?>" 
 /><br>
 Subject: <input type="text" name = "Subject" value="<?php 
@@ -76,7 +77,7 @@ Author: <input type="text" name = "Author" value="<?php printf($author);
 <br>
 Price: <input type="text" name = "Price" value="<?php printf($price); ?>" 
 /><br>
-Stock: <input type="text" name = "Stock" value="<?php printf($stock); ?>" 
+Stock: <input type="text" name = "Stock" value="<?php printf($stock); ?>"
 /><br>
 Publisher Name: <input type="text" name = "pname" value="<?php 
 printf($publisher_name); ?>" /><br>
