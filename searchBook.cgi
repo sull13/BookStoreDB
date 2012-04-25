@@ -28,49 +28,6 @@ $sub = $obj->param("sub");
 $pub= $obj->param("pub");
 $type= $obj->param("type");
 
-if($author eq '')
-{	
-	$authorSearch = "REGEXP '^.*'";
-        #print $authorSearch;
-}
-else
-{
-	$authorSearch= "= '$author'";
-	#print $authorSearch;
-}
-if($title eq '')
-{
-	$titleSearch= "REGEXP '^.*'";
-}
-else
-{
-	$titleSearch= "= '$title'";
-}
-if($isbn eq '')
-{
-	$isbnSearch= "REGEXP '^.*'";
-}
-else
-{
-	$isbnSearch= "= '$isbn'";
-}
-if($sub eq '')
-{
-	$subSearch= "REGEXP '^.*'";
-}
-else
-{
-	$subSearch= "= '$sub'";
-}
-if($pub eq '')
-{
-	$pubSearch= "REGEXP '^.*';";
-}
-else
-{
-	$pubSearch= "= '$pub';";
-}
-
 #connect to the MySQL database
         $dbh = DBI->connect
         ("DBI:mysql:database=$db:host=$host:mysql_socket=$socket",
@@ -79,18 +36,81 @@ else
                                 or die "Can't connect to 
 database:$DBI::errstr\n";
  
+
+#the variable for the sql query
+my $sql= "SELECT ISBN,title,subject,author,price,publisher_name from book ";
+
+#this variable is used to determine the first "and" needed
+my $conditionCount= 0;
+
+#check if at least one value was entered into any of the fields
+#and add the WHERE clause if that's the case
+if( ($author ne "") || ($title ne "") || ($isbn ne "") || ($sub ne "") || ($pub ne "") ) 
+{
+	$sql= $sql . "WHERE ";
+	#add the author to the search if it's not empty
+	if($author ne "")
+	{
+        	$author= $dbh->quote($author);
+	        $sql= $sql . "author= " . $author . " ";
+        	$conditionCount++;
+	}
+	if($title ne "")
+	{
+        	$title= $dbh->quote($title);
+        	if($conditionCount > 0)
+        	{
+                	$sql= $sql . "AND ";
+        	}
+        	$sql= $sql . "title= " . $title . " ";
+        	$conditionCount++;
+	}
+	if($isbn ne "")
+	{
+        	$isbn= $dbh->quote($isbn);
+        	if($conditionCount > 0)
+        	{
+                	$sql= $sql . "AND ";
+        	}
+        	$sql= $sql . "ISBN= " . $isbn . " ";
+        	$conditionCount++;
+	}
+	if($sub ne "")
+	{
+        	$sub= $dbh->quote($sub);
+        	if($conditionCount > 0)
+        	{
+                	$sql= $sql . "AND ";
+        	}
+        	$sql= $sql . "subject= " . $sub . " ";
+        	$conditionCount++;
+	}
+	if($pub ne "")
+	{
+        	$pub= $dbh->quote($pub);
+        	if($conditionCount > 0)
+        	{
+                	$sql= $sql . "AND ";
+        	}
+        	$sql= $sql . "publisher_name= " . $pub . " ";
+        	$conditionCount++;
+	}
+
+	$sql = $sql . ";";	
+}
+
 #safely add the quotes to title
 #print $title;
 #$title = $dbh->quote($title);
 #print "<br>";
 #print $title;
 
-my $sql = "SELECT ISBN,title,subject,author,price,publisher_name"
-	  . " from book WHERE author ".  $authorSearch
-	  . " AND title " . $titleSearch
-	  . " and ISBN " . $isbnSearch
-	  . " and subject " . $subSearch
-	  . " and publisher_name " . $pubSearch;
+#my $sql = "SELECT ISBN,title,subject,author,price,publisher_name"
+#	  . " from book WHERE author ".  $authorSearch
+#	  . " AND title " . $titleSearch
+#	  . " and ISBN " . $isbnSearch
+#	  . " and subject " . $subSearch
+#	  . " and publisher_name " . $pubSearch;
 my $sth = $dbh->prepare($sql);
 $sth->execute();
 
