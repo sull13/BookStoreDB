@@ -51,32 +51,36 @@ if( ($author ne "") || ($title ne "") || ($isbn ne "") || ($sub ne "") || ($pub 
 	#add the author to the search if it's not empty
 	if($author ne "")
 	{
+		$author= "%" . $author . "%";
         	$author= $dbh->quote($author);
-	        $sql= $sql . "author= " . $author . " ";
+	        $sql= $sql . "author LIKE " . $author  . " ";
         	$conditionCount++;
 	}
 	if($title ne "")
 	{
+		$title= "%" . $title . "%";
         	$title= $dbh->quote($title);
         	if($conditionCount > 0)
         	{
                 	$sql= $sql . "AND ";
         	}
-        	$sql= $sql . "title= " . $title . " ";
+        	$sql= $sql . "title LIKE " . $title . " ";
         	$conditionCount++;
 	}
 	if($isbn ne "")
 	{
+		$isbn= "%" . $isbn . "%";
         	$isbn= $dbh->quote($isbn);
         	if($conditionCount > 0)
         	{
                 	$sql= $sql . "AND ";
         	}
-        	$sql= $sql . "ISBN= " . $isbn . " ";
+        	$sql= $sql . "ISBN LIKE " . $isbn . " ";
         	$conditionCount++;
 	}
 	if($sub ne "")
 	{
+		$sub= "%" . $sub . "%";
         	$sub= $dbh->quote($sub);
         	if($conditionCount > 0)
         	{
@@ -87,30 +91,19 @@ if( ($author ne "") || ($title ne "") || ($isbn ne "") || ($sub ne "") || ($pub 
 	}
 	if($pub ne "")
 	{
+		$pub= "%" . $pub . "%";
         	$pub= $dbh->quote($pub);
         	if($conditionCount > 0)
         	{
                 	$sql= $sql . "AND ";
         	}
-        	$sql= $sql . "publisher_name= " . $pub . " ";
+        	$sql= $sql . "publisher_name LIKE " . $pub . " ";
         	$conditionCount++;
 	}
 
 	$sql = $sql . ";";	
 }
 
-#safely add the quotes to title
-#print $title;
-#$title = $dbh->quote($title);
-#print "<br>";
-#print $title;
-
-#my $sql = "SELECT ISBN,title,subject,author,price,publisher_name"
-#	  . " from book WHERE author ".  $authorSearch
-#	  . " AND title " . $titleSearch
-#	  . " and ISBN " . $isbnSearch
-#	  . " and subject " . $subSearch
-#	  . " and publisher_name " . $pubSearch;
 my $sth = $dbh->prepare($sql);
 $sth->execute();
 
