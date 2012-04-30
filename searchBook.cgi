@@ -86,7 +86,7 @@ if( ($author ne "") || ($title ne "") || ($isbn ne "") || ($sub ne "") || ($pub 
         	{
                 	$sql= $sql . "AND ";
         	}
-        	$sql= $sql . "subject= " . $sub . " ";
+        	$sql= $sql . "subject LIKE " . $sub . " ";
         	$conditionCount++;
 	}
 	if($pub ne "")
